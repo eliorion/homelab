@@ -1,2 +1,3 @@
-# Terraform-infra
-First Terraform infrastructures for Proxmox homelab.
+# Pulumi-infra
+First Pulumi infrastructures for Proxmox homelab.
+Pulumi is an Infrastructure as Code tool.
