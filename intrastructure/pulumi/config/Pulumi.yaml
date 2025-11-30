@@ -1,0 +1,4 @@
+name: homelab
+description: First Proxmox homelab server with IaC
+runtime:
+  name: python

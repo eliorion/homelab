@@ -1,0 +1,12 @@
+# Ignore Pulumi state + secrets locally
+.pulumi/
+*.pyc
+__pycache__/
+talos-keys/
+*.iso
+*.pem
+secrets/*
+
+# OS / Editor
+.DS_Store
+.vscode/
