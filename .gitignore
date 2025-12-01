@@ -10,3 +10,7 @@ secrets/*
 # OS / Editor
 .DS_Store
 .vscode/
+
+# Security
+.envrc
+kubeconfig

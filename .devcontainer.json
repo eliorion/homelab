@@ -1,0 +1,21 @@
+{
+  "name": "homelab-infrastructure",
+
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/direnv:1": {},
+    "ghcr.io/devcontainers-extra/features/kubectl-asdf:2": {},
+    "ghcr.io/devcontainers-extra/features/pulumi:1": {}
+},
+  "onCreateCommand": "sudo chsh -s /usr/bin/zsh $USER",
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "terminal.integrated.profiles.linux": {
+      "zsh": {
+        "path": "/usr/bin/zsh"
+      }
+    }
+  },
+
+  "remoteUser": "vscode"
+}
