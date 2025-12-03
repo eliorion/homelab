@@ -21,6 +21,4 @@
   },
   "remoteUser": "vscode",
   "postCreateCommand": "pip install -r infrastructure/pulumi/requirements.txt"
-  //"postCreateCommand": "pip install -r infrastructure/pulumi/requirements.txt"
-
 }

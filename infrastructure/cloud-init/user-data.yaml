@@ -1,0 +1,29 @@
+#cloud-config
+hostname: ubuntu2404-ci
+manage_etc_hosts: true
+
+# Create the user 'devops' (Standard practice over 'test')
+users:
+  - name: devops
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL'] # Allow sudo without password
+    lock_passwd: false
+    ssh_authorized_keys:
+      # PASTE YOUR PUBLIC KEY HERE (cat ~/.ssh/id_rsa.pub)
+      # It should look like: ssh-rsa AAAA... user@machine
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICuZeBqQylhlF705N5vkh23im6mUe/Y1Mnx0wxzk8fH vscode@6813a5afa6ae
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - curl
+  - wget
+  - git
+  # Note: Installing docker/kubectl here gives you the repo defaults (often old).
+  # It is better to do this with Ansible later, but this works for basic setup.
+  - kubectl
+
+runcmd:
+  - echo "Cloud-Init finished" > /var/log/cloud-init-status.txt
