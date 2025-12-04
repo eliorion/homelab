@@ -1,0 +1,10 @@
+name: homelab-test
+description: A minimal Python Pulumi program
+runtime:
+  name: python
+  options:
+    toolchain: pip
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: python
