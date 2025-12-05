@@ -8,7 +8,8 @@
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11",
       "installTools": true
-    }
+    },
+    "ghcr.io/devcontainers-extra/features/packer-asdf:2": {}
   },
   "onCreateCommand": "sudo chsh -s /usr/bin/zsh $USER",
   "settings": {
@@ -20,5 +21,6 @@
     }
   },
   "remoteUser": "vscode",
-  "postCreateCommand": "pip install -r infrastructure/pulumi/requirements.txt"
+  "postCreateCommand": "pip install -r infrastructure/pulumi/requirements.txt",
+  "postStartCommand": "ssh-keygen -t ed25519 -N '' -f $HOME/.ssh/id_ed25519 -q && cp $HOME/.ssh/id_ed25519.pub /workspaces/homelab/infrastructure/ssh_key.pub"
 }
