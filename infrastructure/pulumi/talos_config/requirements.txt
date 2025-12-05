@@ -1,0 +1,3 @@
+pulumi>=3.0.0,<4.0.0
+pulumiverse_talos==0.6.1
+pulumi-command==1.1.3

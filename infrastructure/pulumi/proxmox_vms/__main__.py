@@ -39,10 +39,9 @@ mac_address = get_mac_address(3)
 
 
 # Get environnement variables
-proxmox_ip     = os.getenv("PROXMOX_IP")
+proxmox_endpoint     = os.getenv("PROXMOX_VE_ENDPOINT")
 proxmox_api_token    = os.getenv("PROXMOX_API_TOKEN")
 proxmox_api_token_id = os.getenv("PROXMOX_API_TOKEN_ID")
-proxmox_endpoint = f"https://{proxmox_ip}:8006/"
 proxmox_api = f"{proxmox_api_token_id}={proxmox_api_token}"
 
 
@@ -69,7 +68,7 @@ pool_id="homelab"
 # Define the control plane node and the worker nodes
 nodes = [
     {"name": "control-plane", "vm_id": 101, "pool_id": pool_id, "MAC_address": mac_address[0]},
-#    {"name": "worker-1", "vm_id": 102, "pool_id": pool_id, "MAC_address": mac_address[1]},
+    {"name": "worker-1", "vm_id": 102, "pool_id": pool_id, "MAC_address": mac_address[1]},
 #    {"name": "worker-2", "vm_id": 103, "pool_id": pool_id, "MAC_address": mac_address[2]},
 ]
 
@@ -81,20 +80,20 @@ for node in nodes:
         description="DevOps homelab node",
         name=node["name"],
         node_name=proxmox_node_name,        # The node name in Proxmox
-        agent={
-            "enabled": True,
-            "timeout": "1m",
+#        agent={
+#            "enabled": False,
+#            "timeout": "1m",
 #            "trim": False,
 #            "type": "virtio",
-            "wait_for_ip": {
-                "ipv4": True,
+#            "wait_for_ip": {
+#                "ipv4": True,
 #                "ipv6": False,
-            },
-        },
-#        cdrom={
-#            "file_id": "local:iso/noble-server-cloudimg-amd64.img",
-#            "interface": "ide0",
+#            },
 #        },
+        cdrom={
+            "file_id": "local:iso/talos-os-metal-amd64.iso",
+            "interface": "ide0",
+        },
         clone={
             "vm_id": 9000,
             "full": True,
@@ -133,14 +132,15 @@ for node in nodes:
             #"meta_data_file_id": "string",
             #"network_data_file_id": "string",
             #"type": "string",
-            "user_account": {
-                "keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGd/hnLK+94QSPjBnTP90aWb16GTTr0GXvtwGCSMEENV vscode@d08f9066d2c3"],
-                "password": "root",
-                "username": "devops",
-            },
+            #"user_account": {
+            #    "keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGd/hnLK+94QSPjBnTP90aWb16GTTr0GXvtwGCSMEENV vscode@d08f9066d2c3"],
+            #    "password": "root",
+            #    "username": "devops",
+            #},
             #"user_data_file_id": "/var/lib/vz/template/snippets",
             #"vendor_data_file_id": "",
         },
+#        machine="i440fx",
         memory={
             "dedicated": 4096,
             "floating": 4096,
@@ -152,7 +152,7 @@ for node in nodes:
             "queues": 4,
         }],
         on_boot=True,
-        reboot=True,
+        reboot=False,
         reboot_after_update=True,
         vm_id=node["vm_id"],
         #pool_id=pool_id,

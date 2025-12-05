@@ -1,5 +1,5 @@
-name: homelab-test
-description: A minimal Python Pulumi program
+name: TalosConfig
+description: Regroupe all my talos config
 runtime:
   name: python
   options:

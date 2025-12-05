@@ -1,4 +1,4 @@
-name: homelab
+name: ProxmoxVms
 description: My homelab infrastructure
 runtime:
   name: python
