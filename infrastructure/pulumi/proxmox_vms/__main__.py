@@ -1,9 +1,6 @@
-import os
-import pulumi
-import pulumi_proxmoxve as proxmoxve
-import proxmox_server
+from homelab_ressources.proxmox import vm_machine as vms
 
-import random
+vms.test()
 
 def get_mac_address(nb, prefix="BC:24:11"):
     # On décompose le préfixe en octets déjà définis

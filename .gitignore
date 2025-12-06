@@ -7,6 +7,9 @@ talos-keys/
 *.pem
 secrets/*
 
+# Python package
+homelab_ressources.egg-info
+
 # OS / Editor
 .DS_Store
 .vscode/
