@@ -138,18 +138,18 @@ class Proxmox:
 
     def __init_provider(self,node_name, endpoint, api_access, insecure):
         provider = proxmoxve.Provider(
-            node_name, 
-            endpoint=endpoint, 
+            node_name,
+            endpoint=endpoint,
             api_token=api_access,
             insecure=insecure,
         )
         return pulumi.ResourceOptions(provider=provider)
-         
+
     def _gen_mac_addr(self, prefix="BC:24:11"):
         offset = self._mac_addr_offset
         self._mac_addr_offset = self._mac_addr_offset + 1
         return common.get_mac_address(prefix, offset)
-         
+
     def _gen_vm_id(self):
         offset = self._vm_id_offset
         self._vm_id_offset = self._vm_id_offset + 1
@@ -168,7 +168,7 @@ def test():
 # Add the membership to the pool homelab
 """
 test_pool = proxmoxve.permission.Pool(
-    pool_id, 
+    pool_id,
     pool_id=pool_id,
     opts=proxmox_access
     )

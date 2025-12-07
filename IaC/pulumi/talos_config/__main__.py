@@ -57,6 +57,13 @@ wait_booting = command.local.Command(
     update=None
 )
 
+wait_booting = command.local.Command(
+    "talos-wait-booting",
+    create=f"sleep 20",
+    opts=pulumi.ResourceOptions(parent=set_endpoint),
+    update=""
+)
+
 bootstrap = command.local.Command(
     "talos-bootstrap",
     create=f"talosctl bootstrap --nodes {controlPlaneNodes[0]} --talosconfig=./configs/talosconfig",
