@@ -7,6 +7,8 @@ talos-keys/
 *.pem
 secrets/*
 
+# Talos configuration
+configs/
 # Python package
 homelab_ressources.egg-info
 

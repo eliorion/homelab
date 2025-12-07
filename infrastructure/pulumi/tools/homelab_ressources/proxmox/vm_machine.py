@@ -137,7 +137,8 @@ class Proxmox:
         return pulumi.ResourceOptions(provider=provider)
          
     def _gen_mac_addr(self, prefix="BC:24:11"):
-        offset = self._mac_addr_offset + 1
+        offset = self._mac_addr_offset
+        self._mac_addr_offset = self._mac_addr_offset
         return common.get_mac_address(prefix, offset)
          
     def _gen_vm_id(self):
