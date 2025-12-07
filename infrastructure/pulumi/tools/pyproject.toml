@@ -1,0 +1,9 @@
+[project]
+name = "homelab-ressources"
+version = "0.1.0"
+description = "Shared utilities for Pulumi projects"
+requires-python = ">=3.10"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
