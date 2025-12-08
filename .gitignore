@@ -24,4 +24,4 @@ ssh_key.pub
 infrastructure/pulumi/talos_config/configs/
 
 # Devpod
-.devpod-internal/
+devpod-internal/

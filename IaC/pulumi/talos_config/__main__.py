@@ -59,7 +59,7 @@ wait_booting = command.local.Command(
 
 wait_booting = command.local.Command(
     "talos-wait-booting",
-    create=f"sleep 20",
+    create=f"sleep 30",
     opts=pulumi.ResourceOptions(parent=set_endpoint),
     update=""
 )
