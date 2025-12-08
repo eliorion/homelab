@@ -20,3 +20,4 @@ homelab_ressources.egg-info
 .envrc
 kubeconfig
 ssh_key.pub
+infrastructure/pulumi/talos_config/configs/

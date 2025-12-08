@@ -17,63 +17,64 @@ worker_ip        = os.getenv("WORKER_IP")
 cluster_name     = os.getenv("CLUSTER_NAME")
 disk_name        = os.getenv("DISK_NAME")
 
-nodes = [
-    {"ip": control_plane_ip, "config": ""},
-    {"ip": "192.168.1.43", "config": ""}
-]
+worker_ips = worker_ip.split()
+controlPlaneNodes = [control_plane_ip,]
 
 
 gen_conf = command.local.Command(
     "talos-conf-gen",
-    create=f"talosctl gen config {cluster_name} https://{nodes[0]['ip']}:6443 --install-disk /dev/{disk_name} --output ./configs --force",
+    create=f"talosctl gen config {cluster_name} https://{controlPlaneNodes[0]}:6443 --install-disk /dev/{disk_name} --output ./configs --force",
     update=""
 )
 
-apply_conf_controlplane = command.local.Command(
-    "talos-apply-conf-controlplane",
-    create=f"talosctl apply-config --insecure --nodes {control_plane_ip} --file ./configs/controlplane.yaml",
-    opts=pulumi.ResourceOptions(parent=gen_conf),
-    update=""
-)
 
-apply_conf_worker = command.local.Command(
-    "talos-apply-conf-worker-",
-    create=f"talosctl apply-config --insecure --nodes {worker_ip} --file ./configs/worker.yaml",
-    opts=pulumi.ResourceOptions(parent=apply_conf_controlplane),
-    update=""
-)
+for controlPlane in controlPlaneNodes:
+    apply_conf_controlplane = command.local.Command(
+        "talos-apply-conf-controlplane",
+        create=f"talosctl apply-config --insecure --nodes {controlPlane} --file ./configs/controlplane.yaml",
+        opts=pulumi.ResourceOptions(parent=gen_conf),
+        update=""
+    )
+
+for worker in worker_ips:
+    apply_conf_worker = command.local.Command(
+        f"talos-apply-conf-worker-{worker.split('.')[3]}",
+        create=f"talosctl apply-config --insecure --nodes {worker} --file ./configs/worker.yaml",
+        opts=pulumi.ResourceOptions(parent=apply_conf_controlplane),
+        update=""
+    )
 
 set_endpoint = command.local.Command(
     "talos-set-endpoint",
-    create=f"talosctl --talosconfig=./configs/talosconfig config endpoints {control_plane_ip}",
+    create=f"talosctl --talosconfig=./configs/talosconfig config endpoints {controlPlaneNodes[0]}",
     opts=pulumi.ResourceOptions(parent=apply_conf_worker),
     update=""
 )
 
 wait_booting = command.local.Command(
     "talos-wait-booting",
-    create=f"sleep 20",
+    create=f"sleep 30",
     opts=pulumi.ResourceOptions(parent=set_endpoint),
     update=""
 )
 
 bootstrap = command.local.Command(
     "talos-bootstrap",
-    create=f"talosctl bootstrap --nodes {control_plane_ip} --talosconfig=./configs/talosconfig",
+    create=f"talosctl bootstrap --nodes {controlPlaneNodes[0]} --talosconfig=./configs/talosconfig",
     opts=pulumi.ResourceOptions(parent=wait_booting),
     update=""
 )
 
 get_kubernetes_access = command.local.Command(
     "talos-get-kubernetes-access",
-    create=f"talosctl kubeconfig configs/kubeconfig --nodes {control_plane_ip} --talosconfig=./configs/talosconfig",
+    create=f"talosctl kubeconfig configs/kubeconfig --nodes {controlPlaneNodes[0]} --talosconfig=./configs/talosconfig",
     opts=pulumi.ResourceOptions(parent=bootstrap),
     update=""
 )
 
 check_health = command.local.Command(
     "talos-check-health",
-    create=f"talosctl --nodes {control_plane_ip} --talosconfig=./configs/talosconfig health",
+    create=f"talosctl --nodes {controlPlaneNodes[0]} --talosconfig=./configs/talosconfig health",
     opts=pulumi.ResourceOptions(parent=get_kubernetes_access),
 )
 

@@ -138,7 +138,7 @@ class Proxmox:
          
     def _gen_mac_addr(self, prefix="BC:24:11"):
         offset = self._mac_addr_offset
-        self._mac_addr_offset = self._mac_addr_offset
+        self._mac_addr_offset = self._mac_addr_offset + 1
         return common.get_mac_address(prefix, offset)
          
     def _gen_vm_id(self):
