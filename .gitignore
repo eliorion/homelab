@@ -15,6 +15,7 @@ homelab_ressources.egg-info
 # OS / Editor
 .DS_Store
 .vscode/
+bin/
 
 # Security
 .envrc
