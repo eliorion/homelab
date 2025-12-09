@@ -12,6 +12,7 @@ proxmox_api_token_id = os.getenv("PROXMOX_API_TOKEN_ID")
 proxProvider = proxmox.Proxmox("proxmox", proxmox_api_token_id, proxmox_api_token, endpoint=proxmox_endpoint, insecure=True)
 
 # Define the cluster vm
+<<<<<<< HEAD
 cluster1 = [
     {"name": "Controlplane", "ram": 4096, "disksSize": [16], "iso": "talos-os-metal-amd64.iso"},
     {"name": "Worker-1", "ram": 2048, "disksSize": [8], "iso": "talos-os-metal-amd64.iso"},
@@ -25,4 +26,14 @@ cluster2 = [
 
 # Create the vm
 for vm in cluster1:
+=======
+cluster = [
+    {"name": "Controlplane", "ram": 4096, "disksSize": [16]},
+    {"name": "Worker-1", "ram": 2048, "disksSize": [8]},
+    {"name": "Worker-2", "ram": 2048, "disksSize": [8]},
+]
+
+# Create the vm
+for vm in cluster:
+>>>>>>> e804f0d (Rebase folder architecture to match template flux one)
     proxProvider.createVm(vm["name"], vm_name=vm["name"], ram_memory=vm["ram"], disksSize=vm["disksSize"])
