@@ -2,6 +2,7 @@
   "name": "homelab",
   "image": "mcr.microsoft.com/devcontainers/base:debian",
   "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers-extra/features/direnv:1": {},
     "ghcr.io/devcontainers-extra/features/kubectl-asdf:2": {},
     "ghcr.io/devcontainers-extra/features/pulumi:1": {},
