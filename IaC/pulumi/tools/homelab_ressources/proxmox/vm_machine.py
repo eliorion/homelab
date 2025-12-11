@@ -17,30 +17,30 @@ class Proxmox:
                 clone_vm_id=None,
                 clone_datastore_id="homelab_storage",
                 vm_name=None,
-                machine="i440fx",
                 ram_memory=1024,
                 net_bridge="vmbr0",
                 disksSize=[8]):
         pvm = proxmoxve.vm
         agentArgs = pvm.VirtualMachineAgentArgs(
-             enabled=False,
+             enabled=True,
              timeout="1m",
              trim=False,
              type="virtio",
              wait_for_ip={
-                "ipv4": True,
+                "ipv4": False,
                 "ipv6": False,
              }
         )
         cdromArgs = pvm.VirtualMachineCdromArgs(
-             file_id=boot_file_id
+            interface="ide0",
+            file_id=boot_file_id
         )
         cloneArgs = pvm.VirtualMachineCloneArgs(
             vm_id=clone_vm_id,
             datastore_id=clone_datastore_id,
             full=True,
             node_name=self._node_name,
-            retries=0
+            retries=1
         )
         cpuArgs = pvm.VirtualMachineCpuArgs(
             cores=4,
@@ -100,12 +100,17 @@ class Proxmox:
         return proxmoxve.vm.VirtualMachine(
             deployement_name,                  
             acpi=True,
-            agent=None,
+            agent=agentArgs,
+            boot_orders=["scsi0", "ide0"],
             cdrom=cdromArgs,
             cpu=cpuArgs,
             delete_unreferenced_disks_on_destroy=True,
             description="DevOps homelab node",
-            disks=disksArgs,
+            disks=[{
+                "interface":"scsi0",
+                "datastore_id": clone_datastore_id,
+                "size": disksSize[0]
+            }],
             initialization=None,#cloudInitArgs,
             machine=None,#machine,
             memory=memoryArgs,
@@ -116,7 +121,7 @@ class Proxmox:
             on_boot=True,
             purge_on_destroy=True,         
             reboot=False,
-            reboot_after_update=False,
+            reboot_after_update=True,
             serial_devices=[serialArgs],
             started=True,
             usbs=None,#[usbArgs0],

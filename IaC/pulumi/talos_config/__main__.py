@@ -2,7 +2,6 @@ import os
 import pulumi
 import pulumi_command as command
 import pulumiverse_talos as talos
-import pulumi_kubernetes as k8s
 
 # Stack reference to ProxmoxVms
 config = pulumi.Config()
@@ -20,20 +19,20 @@ disk_name        = os.getenv("DISK_NAME")
 worker_ips = worker_ip.split()
 controlPlaneNodes = [control_plane_ip,]
 
-
+"""
 gen_conf = command.local.Command(
     "talos-conf-gen",
     create=f"talosctl gen config {cluster_name} https://{controlPlaneNodes[0]}:6443 --install-disk /dev/{disk_name} --output ./configs --force",
     update=""
 )
-
+"""
 
 for controlPlane in controlPlaneNodes:
     apply_conf_controlplane = command.local.Command(
         "talos-apply-conf-controlplane",
         create=f"talosctl apply-config --insecure --nodes {controlPlane} --file ./configs/controlplane.yaml",
-        opts=pulumi.ResourceOptions(parent=gen_conf),
-        update=""
+        #opts=pulumi.ResourceOptions(parent=gen_conf),
+        update=None
     )
 
 for worker in worker_ips:
@@ -41,21 +40,21 @@ for worker in worker_ips:
         f"talos-apply-conf-worker-{worker.split('.')[3]}",
         create=f"talosctl apply-config --insecure --nodes {worker} --file ./configs/worker.yaml",
         opts=pulumi.ResourceOptions(parent=apply_conf_controlplane),
-        update=""
+        update=None
     )
 
 set_endpoint = command.local.Command(
     "talos-set-endpoint",
     create=f"talosctl --talosconfig=./configs/talosconfig config endpoints {controlPlaneNodes[0]}",
     opts=pulumi.ResourceOptions(parent=apply_conf_worker),
-    update=""
+    update=None
 )
 
 wait_booting = command.local.Command(
     "talos-wait-booting",
     create=f"sleep 30",
     opts=pulumi.ResourceOptions(parent=set_endpoint),
-    update=""
+    update=None
 )
 
 bootstrap = command.local.Command(
@@ -69,7 +68,7 @@ get_kubernetes_access = command.local.Command(
     "talos-get-kubernetes-access",
     create=f"talosctl kubeconfig configs/kubeconfig --nodes {controlPlaneNodes[0]} --talosconfig=./configs/talosconfig",
     opts=pulumi.ResourceOptions(parent=bootstrap),
-    update=""
+    update=None
 )
 
 check_health = command.local.Command(

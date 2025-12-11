@@ -16,6 +16,7 @@ cluster = [
     {"name": "Controlplane", "ram": 4096, "disksSize": [16]},
     {"name": "Worker-1", "ram": 2048, "disksSize": [8]},
     {"name": "Worker-2", "ram": 2048, "disksSize": [8]},
+#    {"name": "Load-balancer", "ram": 4096, "disksSize": [16]},
 ]
 
 # Create the vm

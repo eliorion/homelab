@@ -2,9 +2,13 @@
   "name": "homelab",
   "image": "mcr.microsoft.com/devcontainers/base:debian",
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/talosctl:1": {},
     "ghcr.io/devcontainers-extra/features/direnv:1": {},
-    "ghcr.io/devcontainers-extra/features/kubectl-asdf:2": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "latest",
+      "helm": "latest",
+      "minikube": false
+    },
     "ghcr.io/devcontainers-extra/features/pulumi:1": {},
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11",
@@ -22,6 +26,6 @@
     }
   },
   "remoteUser": "vscode",
-  "postCreateCommand": "pip install -r infrastructure/pulumi/requirements.txt",
+  "postCreateCommand": "pip install -r IaC/pulumi/requirements.txt",
   "postStartCommand": "ssh-keygen -t ed25519 -N '' -f $HOME/.ssh/id_ed25519 -q && cp $HOME/.ssh/id_ed25519.pub /workspaces/homelab/infrastructure/ssh_key.pub"
 }
