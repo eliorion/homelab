@@ -13,8 +13,7 @@
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11",
       "installTools": true
-    },
-    "ghcr.io/devcontainers-extra/features/packer-asdf:2": {}
+    }
   },
   "onCreateCommand": "sudo chsh -s /usr/bin/zsh $USER",
   "settings": {
