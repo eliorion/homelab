@@ -7,14 +7,18 @@ talos-keys/
 *.pem
 secrets/*
 
+# Talos configuration
+configs/
 # Python package
 homelab_ressources.egg-info
 
 # OS / Editor
 .DS_Store
 .vscode/
+bin/
 
 # Security
 .envrc
 kubeconfig
 ssh_key.pub
+infrastructure/pulumi/talos_config/configs/
