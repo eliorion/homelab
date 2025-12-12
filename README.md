@@ -1,6 +1,3 @@
-# Pulumi-infra
-First Pulumi infrastructures for Proxmox homelab.
-Pulumi is an Infrastructure as Code tool.
 # Homelab
 This project is a personal laboratory for my DevSecOps, Cloud, and GitOps learning journey.
 
