@@ -1,0 +1,6 @@
+[tools]
+kubectl = "latest"
+pulumi = "latest"
+python = "latest"
+talosctl = "latest"
+
