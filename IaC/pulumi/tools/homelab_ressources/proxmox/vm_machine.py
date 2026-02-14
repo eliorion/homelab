@@ -1,19 +1,20 @@
 import os
-import pulumi 
+import pulumi
 import pulumi_proxmoxve as proxmoxve
 from . import common
 
 class Proxmox:
-    def __init__(self, node_name, api_token_id, api_token, endpoint, insecure=False):
+    def __init__(self, node_name, iso_boot_image_name="talos-os-metal-amd64.iso", api_token_id, api_token, endpoint, insecure=False):
         self._mac_addr_offset = 0
         self._vm_id_offset = 500
         self._node_name = node_name
+        self._iso_boot_image_name = iso_boot_image_name
         api_access = f"{api_token_id}={api_token}"
         self._proxmox_provider = self.__init_provider(node_name, endpoint, api_access, insecure)
-        
+
     def createVm(self,
                 deployement_name,                       # Name of the ressource Pulumi
-                boot_file_id="local:iso/talos-os-metal-amd64.iso", 
+                boot_file_id="local:iso/" + self._iso_boot_image_name, # Base ISO file
                 clone_vm_id=None,
                 clone_datastore_id="homelab_storage",
                 vm_name=None,
