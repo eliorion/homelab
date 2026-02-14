@@ -3,4 +3,4 @@ kubectl = "latest"
 pulumi = "latest"
 python = "latest"
 talosctl = "latest"
-
+k9s = "latest"
