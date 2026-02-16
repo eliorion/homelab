@@ -4,7 +4,7 @@ import pulumi_proxmoxve as proxmoxve
 from . import common
 
 class Proxmox:
-    def __init__(self, node_name, iso_boot_image_name="talos-os-metal-amd64.iso", api_token_id, api_token, endpoint, insecure=False):
+    def __init__(self, node_name, api_token_id, api_token, endpoint, iso_boot_image_name="talos-os-metal-amd64.iso", insecure=False):
         self._mac_addr_offset = 0
         self._vm_id_offset = 500
         self._node_name = node_name
@@ -14,13 +14,16 @@ class Proxmox:
 
     def createVm(self,
                 deployement_name,                       # Name of the ressource Pulumi
-                boot_file_id="local:iso/" + self._iso_boot_image_name, # Base ISO file
+                boot_file_id=None, # Base ISO file
                 clone_vm_id=None,
                 clone_datastore_id="homelab_storage",
                 vm_name=None,
                 ram_memory=1024,
                 net_bridge="vmbr0",
                 disksSize=[8]):
+        # If no boot_file_id spécifed, use the default location of iso files and the defalt _iso_boot_image_ame
+        if boot_file_id == None:
+            boot_file_id = "local:iso/" + self._iso_boot_image_name, # Base ISO file
         pvm = proxmoxve.vm
         agentArgs = pvm.VirtualMachineAgentArgs(
              enabled=True,
@@ -97,9 +100,9 @@ class Proxmox:
             mapping=None,
             usb3=True
         )
- 
+
         return proxmoxve.vm.VirtualMachine(
-            deployement_name,                  
+            deployement_name,
             acpi=True,
             agent=agentArgs,
             boot_orders=["scsi0", "ide0"],
@@ -120,14 +123,14 @@ class Proxmox:
             network_devices=[networkArgs],
             node_name=self._node_name,
             on_boot=True,
-            purge_on_destroy=True,         
+            purge_on_destroy=True,
             reboot=False,
             reboot_after_update=True,
             serial_devices=[serialArgs],
             started=True,
             usbs=None,#[usbArgs0],
             vm_id=self._gen_vm_id(),
-            
+
             opts=self._proxmox_provider
         )
     def upload_boot_fiile(self):
