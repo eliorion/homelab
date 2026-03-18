@@ -1,6 +1,17 @@
 [tools]
+# Kubernetes tools
 kubectl = "latest"
-pulumi = "latest"
-python = "latest"
-talosctl = "latest"
 k9s = "latest"
+kubens = "latest"
+# IaC tools
+pulumi = "latest"
+talosctl = "latest"
+# Security tools
+cloudflared = "latest"
+sops = "latest"
+age = "latest"
+# GitOps tools
+helm = "latest"
+flux2 = "latest"
+# Dev tools
+python = "latest"
